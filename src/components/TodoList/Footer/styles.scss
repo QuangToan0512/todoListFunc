@@ -1,0 +1,39 @@
+.footer {
+    
+    color: #777;
+    padding: 10px 15px;
+    height: 20px;
+    text-align: center;
+    border-top: 1px solid #e6e6e6;
+
+    
+}
+
+.filters {
+    & > li {
+        display: block;
+        margin-right: 10px;
+
+        & > button {
+            cursor: pointer;
+        }
+
+        & > button.selected {
+            font-weight: bold;
+        }
+    }
+    
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    list-style: none;
+    position: absolute;
+   
+}
+
+.clear-completed{
+    float: right;
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+}

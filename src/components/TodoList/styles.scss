@@ -1,0 +1,23 @@
+body {
+    margin: auto;
+    line-height: 1.4em;
+}
+
+.todo-app {
+    width: 500px;
+    background: #fff;
+    margin: 130px auto;
+    position: relative;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+
+    & > h1 {
+            position: absolute;
+            top: -190px;
+            width: 100%;
+            font-size: 100px;
+            font-weight: 400;
+            text-align: center;
+            color: rgba(255, 47, 47, 0.15);
+
+    }
+}
