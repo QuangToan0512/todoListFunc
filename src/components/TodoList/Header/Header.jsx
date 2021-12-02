@@ -8,27 +8,28 @@ Header.propTypes = {
 };
 
 function Header({addTodo}) {
-        const [value, setValue] = useState('');
+    const [value, setValue] = useState('');
 
-        const handleOnSubmit = e => {
-            e.preventDefault();
-            if(!addTodo) return;
+    const handleOnSubmit = e => {
+        e.preventDefault();
+        if(!addTodo) return;
 
-            const formValue = {
-                id: new Date().valueOf(),
-                text: value
-            }
-            addTodo(fromJS(formValue));
-            setValue("");
+        const formValue = {
+            id: new Date().valueOf(),
+            text: value
         }
-        
-        const handleOnChange = e => {
-            setValue(e.target.value);
-        }
+        addTodo(fromJS(formValue));
+        setValue("");
+    };
+    
+    const handleOnChange = (e) => {
+        setValue(e.target.value);
+    };
     return (
         <form 
             className="header"
-            onSubmit={handleOnSubmit}>
+            onSubmit={handleOnSubmit}
+            >
             <input
                 className="new-todo"
                 type="text"

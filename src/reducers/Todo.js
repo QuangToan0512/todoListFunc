@@ -1,25 +1,24 @@
 import { List, Map, fromJS, setIn } from "immutable";
 import { filterbyStatus } from "../components/TodoList";
 const Immutable = require('immutable')
+const axios = require('axios')
 
 const initialState = Immutable.fromJS({
     todoList: [
-        {id: 1, text: "Toan", status: "All"},
-        {id: 2, text: "Linh", status: "Completed"},
-        {id: 3, text: "Nam", status: "All"},
-        {id: 4, text: "Toan", status: "All"},
     ],
 })
-
+console.log(initialState);
 export default function Todos(state = initialState, action) {
-
+    debugger
     // const newTodoList = state.get('todoList').toJS()
     switch (action.type) {
         
         case 'ADD_TODO':
-            debugger
-            
             return state.set('todoList', state.get('todoList').push(action.payload));
+        case 'GET_LIST': 
+            debugger
+            console.log(fromJS(action.payload));
+            return fromJS({todoList :action.payload})
         case 'checkCompleted':
             const index = action.payload;
             const status = state.getIn(['todoList', index, 'status'])

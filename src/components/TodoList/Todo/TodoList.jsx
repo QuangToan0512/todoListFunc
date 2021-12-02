@@ -2,16 +2,15 @@ import React, {useState} from 'react';
 import './styles.scss'
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { fromJS, Map } from 'immutable';
 TodoList.propTypes = {
-    todoList: PropTypes.array,
+    todoList: PropTypes.object,
     todoOnClick: PropTypes.func,
     todoOnDeleteClick: PropTypes.func,
     edtItem: PropTypes.func
 }
 
 function TodoList({todoList, todoOnClick, todoOnDeletedClick, edtItem }) {
-    debugger
+    // debugger
     // const handleTodoOnClick = (idx) => {
     //     if(!todoOnClick) return;
     //     todoOnClick(idx);
@@ -81,38 +80,36 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
     }
     
     return (
-            <li
-                className={classnames ({
-                    "todo-item": true,
-                    Completed : todo.get('status') === "Completed"
-                })}
-            >
-                {
-                    visible ? <span
-                        onDoubleClick={() => (handleOnDblClick(todo))} 
-                        onClick={() => handleOnClick(idx)}
-                    >
-                        {todo.get('text')}
-                    </span>
-                    :
-                    <form 
-                        onSubmit={handleOnSubmit}
-                    >
-                      <input
-                        className="edit"
-                        type="text"
-                        value={valueEdit}
-                        onBlur={handleOnBlur}
-                        onChange={handleOnChange}
-                        />
-                    </form>
-                }           
-                <button 
-                    onClick={() => handleRemoveItem(idx)}
-                    >
-                    x
-                </button>            
-            </li>
+        <li
+            className={classnames ({
+                "todo-item": true,
+                Completed : todo.get('status') === "Completed"
+            })}
+        >
+            {
+                visible ? <span
+                    onDoubleClick={() => (handleOnDblClick(todo))} 
+                    onClick={() => handleOnClick(idx)}
+                >
+                    {todo.get('text')}
+                </span>
+                :
+                <form onSubmit={handleOnSubmit}>
+                    <input
+                    className="edit"
+                    type="text"
+                    value={valueEdit}
+                    onBlur={handleOnBlur}
+                    onChange={handleOnChange}
+                    />
+                </form>
+            }           
+            <button 
+                onClick={() => handleRemoveItem(idx)}
+                >
+                x
+            </button>            
+        </li>
     );
 }
 

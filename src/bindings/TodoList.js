@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
 import Todolist from "../components/TodoList";
-import { addTodoList, checkCompleted, clearCompletedItem, edtItem, removeTodo } from "../actions/todo";
+import { addTodoList, checkCompleted, clearCompletedItem, edtItem, removeTodo, getList } from "../actions/todo";
+
+const axios = require('axios')
 
 const mapStateToProps = (state) => {
-    debugger
     return {
         todo: state.todo.get('todoList')
     }
@@ -14,7 +15,8 @@ const mapDispatchToProps = (dispatch) => {
         checkCompleted: idx => dispatch(checkCompleted(idx)),
         removeTodo: todo => dispatch(removeTodo(todo)),
         edtItem: (data, idx) => dispatch(edtItem(data, idx)),
-        clearCompletedItem: () => dispatch(clearCompletedItem)
+        clearCompletedItem: () => dispatch(clearCompletedItem()),
+        getListAll: (todo) => dispatch(getList(todo))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Todolist)

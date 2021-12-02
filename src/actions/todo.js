@@ -1,3 +1,11 @@
+export const getList = (todo) => {
+    debugger
+    return {
+        type: 'GET_LIST',
+        payload: todo
+    }
+}
+
 export const addTodoList = (todo) => {
     return {
         type: 'ADD_TODO',
