@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import './styles.scss'
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import {fromJS, Map} from 'immutable';
+import axios from 'axios';
 TodoList.propTypes = {
     todoList: PropTypes.object,
     todoOnClick: PropTypes.func,
@@ -10,16 +12,6 @@ TodoList.propTypes = {
 }
 
 function TodoList({todoList, todoOnClick, todoOnDeletedClick, edtItem }) {
-    // debugger
-    // const handleTodoOnClick = (idx) => {
-    //     if(!todoOnClick) return;
-    //     todoOnClick(idx);
-    // } 
-
-    // const handleTodoDeleteOnClick = todo => {
-    //     if(!todoOnDeletedClick) return;
-    //     todoOnDeletedClick(todo);  
-    // }
     return (
         <ul className="todo-list">
             {
@@ -48,11 +40,21 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
         if(!todoOnClick) return;
         todoOnClick(idx);
         setValueEdit(todo.get('text'));
+        todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active');
+        axios({
+            method: 'PUT',
+            url: `http://localhost:3000/todoList/${todo.get('id')}`,
+            data: todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active')
+        })
     }
 
-  const handleRemoveItem = idx => {
+  const handleRemoveItem = (idx) => {
         if(!todoOnDeleteClick) return;
         todoOnDeleteClick(idx);
+        axios({
+            method: 'DELETE',
+            url: `http://localhost:3000/todoList/${todo.get('id')}`
+        })
     }
 
     const handleOnDblClick = () => {
@@ -62,21 +64,26 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
     const handleOnChange = e => {
         setValueEdit(e.target.value);
     }
-
     const handleOnBlur = () => {
-        setVisible(!visible)
+        setVisible(!visible);
     }
     const handleOnSubmit = e => {
+        debugger
         e.preventDefault();
+        const id = todo.get('id')
         const formValueEdited = Map({
-            id: new Date().valueOf(),
-            text: valueEdit
+            id,
+            text: valueEdit,
+            status: todo.get('status')
         })
-        console.log(formValueEdited);
         if(!edtItem) return;
         edtItem(formValueEdited, idx);
-
         setVisible(!visible);
+        axios({
+            method: "PUT",
+            url: `http://localhost:3000/todoList/${id}`,
+            data: formValueEdited.toJS()
+        })
     }
     
     return (

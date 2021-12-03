@@ -4,8 +4,7 @@ import './styles.scss'
 import { useEffect, useState } from 'react/cjs/react.development';
 import Footer from './Footer/Footer';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { connect } from 'react-redux';
+
 
 const axios = require('axios')
 
@@ -26,7 +25,7 @@ export const filterbyStatus = (todos= [], status = "") => {
 }
 
 function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clearCompletedItem, getListAll}) {
-    debugger
+    // debugger
 
     useEffect(() => {
         axios({
@@ -54,10 +53,11 @@ function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clear
                 edtItem={edtItem} 
                 />
             <Footer 
+                todo = {todo}
                 setFilterStatus={setFilterStatus}
                 status={status}
                 numOfTodoItemCompleted={filterbyStatus(todo.toJS(), "Completed").length}
-                clearCompleted={clearCompletedItem}
+                clearCompletedItem={clearCompletedItem}
                 />
         </div>
     );

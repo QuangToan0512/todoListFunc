@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss'
 import classnames from 'classnames';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { fromJS } from 'immutable';
+import { filterbyStatus } from '..';
 
 Footer.propTypes = {
 };
 
-function Footer({ status, setFilterStatus, numOfTodoItemCompleted, clearCompleted}) {
+function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCompletedItem}) {
     const filterBtns = [
         {   
             isActive : status === 'All',
@@ -26,7 +27,13 @@ function Footer({ status, setFilterStatus, numOfTodoItemCompleted, clearComplete
             onClick: ()=> setFilterStatus('Completed')
         }
     ]
+
+    const clearCompleted = () => {
+        clearCompletedItem()
+    }
     
+    
+
     return (
         <div className="footer">
             <ul className="filters" >
@@ -49,7 +56,6 @@ function Footer({ status, setFilterStatus, numOfTodoItemCompleted, clearComplete
                 </button>  
             }
         </div>
-        
     );
 }
 

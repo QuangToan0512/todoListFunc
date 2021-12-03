@@ -1,5 +1,4 @@
 export const getList = (todo) => {
-    debugger
     return {
         type: 'GET_LIST',
         payload: todo
@@ -28,6 +27,7 @@ export const removeTodo = (idx) => {
 }
 
 export const edtItem = (data, idx) => {
+    debugger
     return {
         type: 'edtItem',
         payload: {

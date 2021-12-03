@@ -2,8 +2,6 @@ import { connect } from "react-redux";
 import Todolist from "../components/TodoList";
 import { addTodoList, checkCompleted, clearCompletedItem, edtItem, removeTodo, getList } from "../actions/todo";
 
-const axios = require('axios')
-
 const mapStateToProps = (state) => {
     return {
         todo: state.todo.get('todoList')
