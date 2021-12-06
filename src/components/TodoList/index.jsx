@@ -4,9 +4,7 @@ import './styles.scss'
 import { useEffect, useState } from 'react/cjs/react.development';
 import Footer from './Footer/Footer';
 import PropTypes from 'prop-types';
-
-
-const axios = require('axios')
+import todoApi from '../../api/todoApi';
 
 
 Todolist.propTypes = {
@@ -25,18 +23,13 @@ export const filterbyStatus = (todos= [], status = "") => {
 }
 
 function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clearCompletedItem, getListAll}) {
-    // debugger
-
     useEffect(() => {
-        axios({
-            method: 'GET',
-            url: 'http://localhost:3000/todoList'
-        }).then((res) => {
+        todoApi.getAll()
+            .then((res) => {
                 getListAll(res.data);
             })
-            .catch((err)=> {console.log(err);})
-    }, [])
-    
+    }, [getListAll])
+    localStorage.setItem('todoList', JSON.stringify((todo.toJS())));
     const [status, setStatus] = useState('All');
     const setFilterStatus = (status= '')  => {
         setStatus(status);
@@ -45,7 +38,10 @@ function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clear
     return (
         <div className="todo-app">
             <h1>todos</h1>
-            <Header addTodo={addTodoList}/>
+            <Header
+                addTodo={addTodoList}
+                todo= {todo}
+            />
             <TodoList 
                 todoList={filterbyStatus(todo, status)} 
                 todoOnClick={checkCompleted}
@@ -62,6 +58,5 @@ function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clear
         </div>
     );
 }
-
 
 export default Todolist;

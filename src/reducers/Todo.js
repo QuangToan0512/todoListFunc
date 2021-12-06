@@ -3,11 +3,9 @@ import { filterbyStatus } from "../components/TodoList";
 const Immutable = require('immutable')
 
 const initialState = Immutable.fromJS({
-    todoList: [
-    ],
+    todoList: JSON.parse(localStorage.getItem('todoList')) || []
 })
 export default function Todos(state = initialState, action) {
-    // const newTodoList = state.get('todoList').toJS()
     switch (action.type) {
         case 'GET_LIST':
             return fromJS({todoList :action.payload});

@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss'
 import classnames from 'classnames';
-import axios from 'axios';
-import { fromJS } from 'immutable';
 import { filterbyStatus } from '..';
+import todoApi from '../../../api/todoApi';
 
 Footer.propTypes = {
 };
@@ -30,9 +29,11 @@ function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCom
 
     const clearCompleted = () => {
         clearCompletedItem()
+        const arr = filterbyStatus(todo.toJS(), 'Completed')
+        arr.forEach(element => {
+            todoApi.remove(element.id)
+        });
     }
-    
-    
 
     return (
         <div className="footer">

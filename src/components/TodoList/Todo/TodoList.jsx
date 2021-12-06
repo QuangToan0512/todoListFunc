@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import './styles.scss'
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {fromJS, Map} from 'immutable';
-import axios from 'axios';
+import {Map} from 'immutable';
+import todoApi from '../../../api/todoApi';
 TodoList.propTypes = {
     todoList: PropTypes.object,
     todoOnClick: PropTypes.func,
@@ -41,20 +41,23 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
         todoOnClick(idx);
         setValueEdit(todo.get('text'));
         todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active');
-        axios({
-            method: 'PUT',
-            url: `http://localhost:3000/todoList/${todo.get('id')}`,
-            data: todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active')
-        })
+        const data = todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active')
+        todoApi.edit(data, todo.get('id'))
+        // axios({
+        //     method: 'PUT',
+        //     url: `http://localhost:3000/todoList/${todo.get('id')}`,
+        //     data: todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active')
+        // })
     }
 
   const handleRemoveItem = (idx) => {
         if(!todoOnDeleteClick) return;
         todoOnDeleteClick(idx);
-        axios({
-            method: 'DELETE',
-            url: `http://localhost:3000/todoList/${todo.get('id')}`
-        })
+        todoApi.remove(todo.get('id'))
+        // axios({
+        //     method: 'DELETE',
+        //     url: `http://localhost:3000/todoList/${todo.get('id')}`
+        // })
     }
 
     const handleOnDblClick = () => {
@@ -79,11 +82,12 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
         if(!edtItem) return;
         edtItem(formValueEdited, idx);
         setVisible(!visible);
-        axios({
-            method: "PUT",
-            url: `http://localhost:3000/todoList/${id}`,
-            data: formValueEdited.toJS()
-        })
+        todoApi.edit(formValueEdited.toJS(), id)
+        // axios({
+        //     method: "PATCH",
+        //     url: `http://localhost:3000/todoList/${id}`,
+        //     data: formValueEdited.toJS()
+        // })
     }
     
     return (

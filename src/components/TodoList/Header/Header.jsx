@@ -3,30 +3,25 @@ import PropTypes from 'prop-types';
 import './styles.scss'
 import { fromJS } from 'immutable';
 import axios from 'axios';
+import todoApi from '../../../api/todoApi';
 
 Header.propTypes = {
     addTodo: PropTypes.func
 };
 
-function Header({addTodo}) {
+function Header({addTodo, todo}) {
     const [value, setValue] = useState('');
-
-
     const handleOnSubmit = e => {
         e.preventDefault();
         if(!addTodo) return;
         const formValue = {
             id: new Date().valueOf(),
             text: value,
-            status: 'All'
+            status: 'Active'
         }
         addTodo(fromJS(formValue));
         setValue("");
-        axios({
-            method: 'POST',
-            url: 'http://localhost:3000/todoList',
-            data: formValue
-        })
+        todoApi.add(formValue)
     };
     
     const handleOnChange = (e) => {
