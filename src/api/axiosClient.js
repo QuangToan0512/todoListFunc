@@ -1,7 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "../constants/config";
 
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: BASE_URL,
     timeout: 1000,
     headers: {'X-Custom-Header': 'foobar'}
 })

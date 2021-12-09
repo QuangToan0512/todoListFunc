@@ -9,7 +9,7 @@ Header.propTypes = {
     addTodo: PropTypes.func
 };
 
-function Header({addTodo, todo}) {
+function Header({addTodo}) {
     const [value, setValue] = useState('');
     const handleOnSubmit = e => {
         e.preventDefault();
@@ -21,7 +21,6 @@ function Header({addTodo, todo}) {
         }
         addTodo(fromJS(formValue));
         setValue("");
-        todoApi.add(formValue)
     };
     
     const handleOnChange = (e) => {

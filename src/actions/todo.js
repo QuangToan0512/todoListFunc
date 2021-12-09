@@ -1,44 +1,42 @@
+import {ADD_TODO_SAGA, CHECK_COMPLETED_TODO_SAGA , CLEAR_COMPLETED_TODO_SAGA, EDIT_TODO_SAGA, GET_LIST, REMOVE_TODO_SAGA } from "../constants/actionsTypes"
+
 export const getList = (todo) => {
     return {
-        type: 'GET_LIST',
+        type: GET_LIST,
         payload: todo
     }
 }
 
 export const addTodoList = (todo) => {
     return {
-        type: 'ADD_TODO',
+        type: ADD_TODO_SAGA,
         payload: todo
     }
 }
-
-export const checkCompleted = (idx) => {
+export const removeTodo = (data) => {
     return {
-        type: 'checkCompleted',
-        payload: idx
+        type: REMOVE_TODO_SAGA,
+        payload: data
     }
 }
 
-export const removeTodo = (idx) => {
+export const checkCompleted = (data,idx) => {
     return {
-        type: 'removeTodo',
-        payload: idx
+        type: CHECK_COMPLETED_TODO_SAGA,
+        payload: {data, idx}
     }
 }
 
-export const edtItem = (data, idx) => {
-    debugger
+export const edtItem = (formValueEdited, idx, id) => {
     return {
-        type: 'edtItem',
-        payload: {
-            data: data.get('text'),
-            idx
-        }
+        type: EDIT_TODO_SAGA,
+        payload: {formValueEdited, idx, id}
     }
 }
 
-export const clearCompletedItem = () => {
+export const clearCompletedItem = (arr) => {
     return {
-        type: 'clearCompleted',
+        type: CLEAR_COMPLETED_TODO_SAGA,
+        payload: arr
     }
 }

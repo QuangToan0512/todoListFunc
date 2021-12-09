@@ -8,7 +8,7 @@ import todoApi from '../../../api/todoApi';
 Footer.propTypes = {
 };
 
-function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCompletedItem}) {
+function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCompleted}) {
     const filterBtns = [
         {   
             isActive : status === 'All',
@@ -27,12 +27,9 @@ function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCom
         }
     ]
 
-    const clearCompleted = () => {
-        clearCompletedItem()
+    const handleClearCompleted = () => {
         const arr = filterbyStatus(todo.toJS(), 'Completed')
-        arr.forEach(element => {
-            todoApi.remove(element.id)
-        });
+        clearCompleted(arr)
     }
 
     return (
@@ -51,7 +48,7 @@ function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCom
                 numOfTodoItemCompleted > 0 && 
                 <button
                     className="clear-completed"
-                    onClick={clearCompleted}
+                    onClick={handleClearCompleted}
                     >   
                     Clear Completed
                 </button>  

@@ -1,10 +1,9 @@
 import Header from './Header/Header';
 import TodoList from './Todo/TodoList';
 import './styles.scss'
-import { useEffect, useState } from 'react/cjs/react.development';
+import { useState } from 'react/cjs/react.development';
 import Footer from './Footer/Footer';
 import PropTypes from 'prop-types';
-import todoApi from '../../api/todoApi';
 
 
 Todolist.propTypes = {
@@ -23,12 +22,6 @@ export const filterbyStatus = (todos= [], status = "") => {
 }
 
 function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clearCompletedItem, getListAll}) {
-    useEffect(() => {
-        todoApi.getAll()
-            .then((res) => {
-                getListAll(res.data);
-            })
-    }, [getListAll])
     localStorage.setItem('todoList', JSON.stringify((todo.toJS())));
     const [status, setStatus] = useState('All');
     const setFilterStatus = (status= '')  => {
@@ -40,9 +33,9 @@ function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clear
             <h1>todos</h1>
             <Header
                 addTodo={addTodoList}
-                todo= {todo}
             />
             <TodoList 
+                getListAll = {getListAll}
                 todoList={filterbyStatus(todo, status)} 
                 todoOnClick={checkCompleted}
                 todoOnDeletedClick={removeTodo} 
@@ -53,7 +46,7 @@ function Todolist({todo, addTodoList, checkCompleted, removeTodo, edtItem, clear
                 setFilterStatus={setFilterStatus}
                 status={status}
                 numOfTodoItemCompleted={filterbyStatus(todo.toJS(), "Completed").length}
-                clearCompletedItem={clearCompletedItem}
+                clearCompleted={clearCompletedItem}
                 />
         </div>
     );

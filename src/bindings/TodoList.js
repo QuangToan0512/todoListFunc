@@ -10,10 +10,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addTodoList: todo => dispatch(addTodoList(todo)),
-        checkCompleted: idx => dispatch(checkCompleted(idx)),
-        removeTodo: todo => dispatch(removeTodo(todo)),
-        edtItem: (data, idx) => dispatch(edtItem(data, idx)),
-        clearCompletedItem: () => dispatch(clearCompletedItem()),
+        checkCompleted: (data,idx) => dispatch(checkCompleted(data,idx)),
+        removeTodo: idx => dispatch(removeTodo(idx)),
+        edtItem: (formValueEdited, idx, id) => dispatch(edtItem(formValueEdited, idx, id)),
+        clearCompletedItem: (arr) => dispatch(clearCompletedItem(arr)),
         getListAll: (todo) => dispatch(getList(todo))
     }
 }

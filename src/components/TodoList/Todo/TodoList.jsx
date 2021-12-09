@@ -38,26 +38,15 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
 
     const handleOnClick = (idx) => {
         if(!todoOnClick) return;
-        todoOnClick(idx);
-        setValueEdit(todo.get('text'));
-        todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active');
-        const data = todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active')
-        todoApi.edit(data, todo.get('id'))
-        // axios({
-        //     method: 'PUT',
-        //     url: `http://localhost:3000/todoList/${todo.get('id')}`,
-        //     data: todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active')
-        // })
+        const data = todo.setIn(['status'],todo.get('status') !== 'Completed' ? 'Completed' : 'Active');
+        todoOnClick(data, idx);
     }
 
   const handleRemoveItem = (idx) => {
         if(!todoOnDeleteClick) return;
-        todoOnDeleteClick(idx);
-        todoApi.remove(todo.get('id'))
-        // axios({
-        //     method: 'DELETE',
-        //     url: `http://localhost:3000/todoList/${todo.get('id')}`
-        // })
+        const id = todo.get('id')
+        const data = {id, idx }
+        todoOnDeleteClick(data);
     }
 
     const handleOnDblClick = () => {
@@ -71,23 +60,16 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
         setVisible(!visible);
     }
     const handleOnSubmit = e => {
-        debugger
         e.preventDefault();
         const id = todo.get('id')
-        const formValueEdited = Map({
+        const formValueEdited = {
             id,
             text: valueEdit,
             status: todo.get('status')
-        })
+        }
         if(!edtItem) return;
-        edtItem(formValueEdited, idx);
+        edtItem(formValueEdited, idx, id);
         setVisible(!visible);
-        todoApi.edit(formValueEdited.toJS(), id)
-        // axios({
-        //     method: "PATCH",
-        //     url: `http://localhost:3000/todoList/${id}`,
-        //     data: formValueEdited.toJS()
-        // })
     }
     
     return (
