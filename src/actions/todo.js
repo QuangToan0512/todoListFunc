@@ -1,4 +1,9 @@
-import {ADD_TODO_SAGA, CHECK_COMPLETED_TODO_SAGA , CLEAR_COMPLETED_TODO_SAGA, EDIT_TODO_SAGA, GET_LIST, REMOVE_TODO_SAGA } from "../constants/actionsTypes"
+import {ADD_TODO_SAGA,
+        CHECK_COMPLETED_TODO_SAGA,
+        CLEAR_COMPLETED_TODO_SAGA,
+        EDIT_TODO_SAGA,
+        GET_LIST,
+        REMOVE_TODO_SAGA } from "../constants/actionsTypes"
 
 export const getList = (todo) => {
     return {
@@ -6,7 +11,6 @@ export const getList = (todo) => {
         payload: todo
     }
 }
-
 export const addTodoList = (todo) => {
     return {
         type: ADD_TODO_SAGA,

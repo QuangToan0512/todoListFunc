@@ -1,29 +1,35 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './styles.scss'
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {Map} from 'immutable';
-import todoApi from '../../../api/todoApi';
-TodoList.propTypes = {
+import { connect } from 'react-redux';
+import { checkCompleted, edtItem, removeTodo } from '../../../actions/todo';
+import { getStatus, getVisibleTodos } from '../../../reselect/todoSelector';
+import {List} from 'immutable';
+Todos.propTypes = {
     todoList: PropTypes.object,
     todoOnClick: PropTypes.func,
     todoOnDeleteClick: PropTypes.func,
     edtItem: PropTypes.func
 }
 
-function TodoList({todoList, todoOnClick, todoOnDeletedClick, edtItem }) {
+
+function Todos({todo = List([]), checkCompleted, removeTodo, edtItem, status}) {
+
+    localStorage.setItem('todoList', JSON.stringify((todo.toJS())));
+
     return (
         <ul className="todo-list">
             {
-                todoList.map((todo, index) => (
+                todo.map((todo, index) => (
                    <Todo
-                        todoOnDeleteClick={todoOnDeletedClick}
-                        todoOnClick={todoOnClick}
+                        todoOnDeleteClick={removeTodo}
+                        todoOnClick={checkCompleted}
                         key={index} 
                         todo={todo}
-                        idx={index} 
-                        todoList={todoList}
-                        edtItem={edtItem} 
+                        idx={index}
+                        edtItem={edtItem}
+                        status = {status}
                     />
                 ))
             }
@@ -106,4 +112,18 @@ const Todo = ({todo, idx, todoOnClick, todoOnDeleteClick, edtItem}) => {
     );
 }
 
-export default TodoList;    
+const mapStateToProps = (state, props) => {
+    return {
+        todo: getVisibleTodos(state, props)
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        checkCompleted: (data,idx) => dispatch(checkCompleted(data,idx)),
+        removeTodo: idx => dispatch(removeTodo(idx)),
+        edtItem: (formValueEdited, idx, id) => dispatch(edtItem(formValueEdited, idx, id)), 
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todos);

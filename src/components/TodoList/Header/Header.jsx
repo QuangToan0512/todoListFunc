@@ -1,25 +1,25 @@
-import React, {useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss'
 import { fromJS } from 'immutable';
-import axios from 'axios';
-import todoApi from '../../../api/todoApi';
+import { connect } from 'react-redux';
+import { addTodoList } from '../../../actions/todo';
 
 Header.propTypes = {
     addTodo: PropTypes.func
 };
 
-function Header({addTodo}) {
+function Header({addTodoList}) {
     const [value, setValue] = useState('');
     const handleOnSubmit = e => {
         e.preventDefault();
-        if(!addTodo) return;
+        if(!addTodoList) return;
         const formValue = {
             id: new Date().valueOf(),
             text: value,
             status: 'Active'
         }
-        addTodo(fromJS(formValue));
+        addTodoList(fromJS(formValue));
         setValue("");
     };
     
@@ -42,4 +42,9 @@ function Header({addTodo}) {
     );
 }
 
-export default Header; 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTodoList: todo => dispatch(addTodoList(todo)),      
+    }
+}
+export default connect(null,mapDispatchToProps)(Header)

@@ -1,6 +1,15 @@
 import todoApi from "../api/todoApi";
-import {put, take, call} from 'redux-saga/effects';
-import { ADD_TODO, ADD_TODO_SAGA, CHECK_COMPLETED_TODO, CHECK_COMPLETED_TODO_SAGA, CLEAR_COMPLETED_TODO, CLEAR_COMPLETED_TODO_SAGA, EDIT_TODO, EDIT_TODO_SAGA, GET_LIST, REMOVE_TODO, REMOVE_TODO_SAGA } from "../constants/actionsTypes";
+import {put, take, fork} from 'redux-saga/effects';
+import {ADD_TODO, ADD_TODO_SAGA, 
+        CHECK_COMPLETED_TODO, 
+        CHECK_COMPLETED_TODO_SAGA, 
+        CLEAR_COMPLETED_TODO, 
+        CLEAR_COMPLETED_TODO_SAGA, 
+        EDIT_TODO,
+        EDIT_TODO_SAGA,
+        GET_LIST,
+        REMOVE_TODO,
+        REMOVE_TODO_SAGA } from "../constants/actionsTypes";
 import { fromJS } from "immutable";
 
 
@@ -9,13 +18,12 @@ export function* fetchTodo() {
     const {data} = yield todoApi.getAll() 
     yield put({type: GET_LIST, payload: data})
 }
-
 //Add Todo
 export function* watchAddTodo() {
     while(true) {
-        const action = yield take(ADD_TODO_SAGA)
+        const action = yield take(ADD_TODO_SAGA) //Blocking
         const {payload} = action
-        yield call(workerAddTodo, payload)
+        yield fork(workerAddTodo, payload) // Non-Blocking
     }
 }
 
@@ -25,11 +33,10 @@ export function* workerAddTodo(payload) {
 }
 
 //Remove Todo
-
 export function* watchRemoveTodo() {
     while(true) {
         const action = yield take(REMOVE_TODO_SAGA)
-        yield call(workerRemoveTodo, action)
+        yield fork(workerRemoveTodo, action)
     }
 }
 
@@ -42,7 +49,7 @@ export function* workerRemoveTodo(action) {
 export function* watchCheckCompleted() {
     while(true) {
         const action = yield take(CHECK_COMPLETED_TODO_SAGA)
-        yield call(workerCheckCompleted, action)
+        yield fork(workerCheckCompleted, action)
     }
 }
 
@@ -56,7 +63,7 @@ export function* workerCheckCompleted(action) {
 export function* watchEditTodo() {
     while(true) {
         const action = yield take(EDIT_TODO_SAGA)
-        yield call(workerEditTodo, action)
+        yield fork(workerEditTodo, action)
     }
 }
 
@@ -66,18 +73,17 @@ export function* workerEditTodo(action) {
     yield put({type: EDIT_TODO, payload: action.payload})
 }
 
-// CheckCompleted Todo
+// Clear Completed Todo
 export function* watchClearCompletedTodo() {
-    
     while(true) {
         const action = yield take(CLEAR_COMPLETED_TODO_SAGA)
-        yield call(workerClearCompletedTodo, action)
+        yield fork(workerClearCompletedTodo, action)
     }
 }
 
 export function* workerClearCompletedTodo(action) {
-    const arr = action.payload  
-        yield arr.forEach(element => {
+    const arr = (action.payload).toJS()
+        arr.forEach(element => {
             todoApi.remove(element.id)
     });
     yield put({type: CLEAR_COMPLETED_TODO})

@@ -1,6 +1,6 @@
 import {fromJS } from "immutable";
-import { filterbyStatus } from "../components/TodoList";
 import { ADD_TODO, CHECK_COMPLETED_TODO, CLEAR_COMPLETED_TODO, EDIT_TODO, GET_LIST, REMOVE_TODO } from "../constants/actionsTypes";
+import { filterbyStatus } from "../reselect/todoSelector";
 const Immutable = require('immutable')
 
 const initialState = Immutable.fromJS({
@@ -23,7 +23,7 @@ export default function Todos(state = initialState, action) {
             const {idx, formValueEdited} = action.payload
             return state.setIn(['todoList', idx, 'text'], formValueEdited.text)
         case CLEAR_COMPLETED_TODO:
-            return state.set('todoList',fromJS(filterbyStatus(state.get('todoList').toJS(), 'Active')));
+            return state.set('todoList',fromJS(filterbyStatus(state.get('todoList'), 'Active')));
       default:
         return state;
     }

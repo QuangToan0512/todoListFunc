@@ -2,13 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss'
 import classnames from 'classnames';
-import { filterbyStatus } from '..';
-import todoApi from '../../../api/todoApi';
+import { connect } from 'react-redux';
+import { clearCompletedItem } from '../../../actions/todo';
+import { filterbyStatus } from '../../../reselect/todoSelector';
 
 Footer.propTypes = {
+    todo: PropTypes.object,
+    status: PropTypes.string,
+    setFilterStatus: PropTypes.func,
+    numOfTodoItemCompleted: PropTypes.number,
+    clearCompleted: PropTypes.func
 };
 
-function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCompleted}) {
+function Footer({ todo,status, setFilterStatus, clearCompletedItem}) {
+
+    const numOfTodoItemCompleted= filterbyStatus(todo, "Completed").toJS().length
     const filterBtns = [
         {   
             isActive : status === 'All',
@@ -20,16 +28,16 @@ function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCom
             title: "Active",
             onClick: () => setFilterStatus('Active')
         },
-        {   
+        {
             isActive : status === 'Completed',
             title: "Completed",
-            onClick: ()=> setFilterStatus('Completed')
+            onClick: ()=> 
+                setFilterStatus('Completed')
         }
     ]
-
     const handleClearCompleted = () => {
-        const arr = filterbyStatus(todo.toJS(), 'Completed')
-        clearCompleted(arr)
+        const arr = filterbyStatus(todo, 'Completed')
+        clearCompletedItem(arr)
     }
 
     return (
@@ -56,8 +64,7 @@ function Footer({ todo,status, setFilterStatus, numOfTodoItemCompleted, clearCom
         </div>
     );
 }
-
-const Btns = ({title, onClick, isActive}) => {  
+const Btns = ({title, onClick, isActive}) => {
     return (
         <li>
             <button
@@ -72,4 +79,17 @@ const Btns = ({title, onClick, isActive}) => {
     )
 }
 
-export default Footer;
+
+const mapStateToProps = (state) => {
+    return {
+        todo: state.todo.get('todoList')
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        clearCompletedItem: (arr) => dispatch(clearCompletedItem(arr))   
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);
