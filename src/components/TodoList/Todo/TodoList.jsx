@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { checkCompleted, edtItem, removeTodo } from '../../../actions/todo';
-import { getStatus, getVisibleTodos } from '../../../reselect/todoSelector';
+import {getVisibleTodos } from '../../../reselect/todoSelector';
 import {List} from 'immutable';
 Todos.propTypes = {
     todoList: PropTypes.object,

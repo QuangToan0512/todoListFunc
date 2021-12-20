@@ -13,7 +13,7 @@ export const filterbyStatus = (todos= [], status = "") => {
 
 const getTodos = (state) => state.todo.get('todoList');
 
-export const getStatus = (state, props) => props.status
+const getStatus = (state, props) => props.status
 
 export const getVisibleTodos = createSelector(
       [ getTodos, getStatus ],
